@@ -10,10 +10,10 @@ void main(args)
     home: new MenuPage()
   ));
 
-  Bus temp = new Bus(4);
+  Bus temp = new Bus();
   temp.printTime();
   int nextBus;
-  nextBus = temp.getNextBus('6', 1049);
+  nextBus = temp.getNextBus('6', 1049, 0);
   print(nextBus);
-  print(temp.getNextBus('6', nextBus));
+  print(temp.getNextBus('6', nextBus, 0));
 }
