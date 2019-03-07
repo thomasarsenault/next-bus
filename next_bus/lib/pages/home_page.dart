@@ -39,7 +39,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context)
   {
     return new Container(
-      child: new Text("Home page!")
+      child: new Text("Home page!\nTime: " + DateTime.now().toString())
     );
   }
 }

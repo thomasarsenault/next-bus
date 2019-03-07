@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../UI/main_scaffold.dart';
 import '../UI/bus_display.dart';
@@ -23,10 +24,11 @@ class BusList extends StatefulWidget
   //   // new BusDisplay(6, six.getNextBus('6', 1049)),
   //   // new BusDisplay(6, six.getNextBus('6', widget.six.getNextBus('6', 1049))),
   // ];
+
   final listOfHouseBuses = getListOfHouseBuses();
 
   final listOfUniBuses = getListOfUniBuses();
-
+  
   @override
   _BusListState createState() => _BusListState();
 }
@@ -39,7 +41,7 @@ class _BusListState extends State<BusList> {
       child: new Material(
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          children: widget.location == 0 ? widget.listOfHouseBuses : widget.listOfUniBuses //if location == 0, house was selected and the house buses are shown
+          children: widget.location == 0 ? getListOfHouseBuses() : getListOfUniBuses() //if location == 0, house was selected and the house buses are shown
           )
               // new Text("House", onTap: () => print("Pressed house!"), style: new TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 50.0)),
               // new Text("University", style: new TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 50.0))
@@ -50,12 +52,18 @@ class _BusListState extends State<BusList> {
 
 List<Widget> getListOfHouseBuses()
 {
+  var currentTime = new StringBuffer();
+  //build a string to be in the format of HHMM, for example 1:20PM will be converted to 1320
+  currentTime.write(DateTime.now().hour.toString());
+  currentTime.write(DateTime.now().minute.toString());
+  var intTime = int.parse(currentTime.toString());
   Bus houseBus = new Bus();
-
+  
   //load list with each bus and it's next time
   var listOfBusTimes = [
-    new BusTime('6', houseBus.getNextBus('6', 1050, 0)),
-    new BusTime('6', houseBus.getNextBus('6', 1049, 0))
+    new BusTime('6', houseBus.getNextBus('6', intTime, 0)),
+    new BusTime('58U', houseBus.getNextBus('58U', intTime, 0)),
+    new BusTime('1', houseBus.getNextBus('1', intTime, 0))
   ];
 
   //sort the list by the time
@@ -64,20 +72,28 @@ List<Widget> getListOfHouseBuses()
   //load the widget list to be display with the previously sorted list of bus times
   List<Widget> listOfHouseBuses = [
     new BusDisplay(listOfBusTimes[0]),
-    new BusDisplay(listOfBusTimes[1])
+    new BusDisplay(listOfBusTimes[1]),
+    new BusDisplay(listOfBusTimes[2])
   ];
   return listOfHouseBuses;
 }
 
 List<Widget> getListOfUniBuses()
 {
+  var currentTime = new StringBuffer();
+
+  //build a string to be in the format of HHMM, for example 1:20PM will be converted to 1320
+  currentTime.write(DateTime.now().hour.toString());
+  currentTime.write(DateTime.now().minute.toString());
+  var intTime = int.parse(currentTime.toString());
+
   Bus uniBus = new Bus();
 
   var listOfBusTimes = [
-    new BusTime('6', uniBus.getNextBus('6', 1215, 1)),
-    new BusTime('57U', uniBus.getNextBus('57U', 1215, 1)),
-    new BusTime('58U', uniBus.getNextBus('58U', 1215, 1)),
-    new BusTime('50U', uniBus.getNextBus('50U', 1215, 1))
+    new BusTime('6', uniBus.getNextBus('6', intTime, 1)),
+    new BusTime('57U', uniBus.getNextBus('57U', intTime, 1)),
+    new BusTime('58U', uniBus.getNextBus('58U', intTime, 1)),
+    new BusTime('50U', uniBus.getNextBus('50U', intTime, 1))
   ];
   listOfBusTimes.sort((a, b) => a.busTime.compareTo(b.busTime));
 

@@ -12,7 +12,11 @@ class Bus
   var listOfHouseBuses = {
     '6': [548, 619, 649, 720, 740, 800, 820, 840, 900, 920, 940, 1000, 1020, 1050, 1120, 1150, 1220, 1250, 1320, 1350, 1422,
         1442, 1502, 1522, 1542, 1602, 1622, 1642, 1702, 1722, 1742, 1802, 1819, 1849, 1919, 1949, 2019, 2049, 2119, 2149,
-        2219, 2249, 2319, 2349, 19]
+        2219, 2249, 2319, 2349, 19],
+    '58U': [726, 746, 806, 826, 846, 906, 926, 946, 1006, 1026, 1046, 1106, 1126, 1146, 1206, 1226, 1246, 1306, 1326, 1346,
+        1406, 1426, 1446, 1506, 1526, 1546, 1606, 1626, 1646, 1706, 1726, 1746, 1806, 1826, 1846, 1906, 1926, 1946, 2006, 2026, 2046, 2106, 2126, 2146, 2206],
+    '1': [542, 612, 642, 713, 743, 813, 843, 913, 943, 1012, 1042, 1112, 1142, 1212, 1242, 1312, 1342, 1414, 1444, 1514, 1544,
+        1614, 1644, 1714, 1744, 1814, 1844, 1912, 1942, 2012, 2042, 2112, 2142, 2212, 2242, 2312, 2342, 12, 42]
   };
 
   var listOfUniBuses = {
@@ -23,7 +27,7 @@ class Bus
     '58U': [720,	740,	800,	820,	840,	900,	920,	940,	1000,	1020,	1040,	1100,	1120,	1140,	1200,	1220,	1240,	1300,	1320,	1340,	1400,	1420,	1440,	1500,
           1520,	1540,	1600,	1620,	1640,	1700,	1720,	1740,	1800,	1820,	1840,	1900,	1920,	1940,	2000,	2020,	2040,	2100,	2120,	2140,	2200],
     '50U': [810, 830,	850,	910,	930, 950,	1010,	1030,	1050,	1110,	1130,	1150,	1210,	1230,	1250,	1310,	1330,	1350,	1410,	1430,	1450,	1510,	1530,	1550,	1610,	1630,	1650,	1710,	1730,	1750,	1810,	1830,	1850,	1910,	1930,
-          1950,	2010,	2030,	2050,	2110,	2130,	2150,	2210,]
+          1950,	2010,	2030,	2050,	2110,	2130,	2150,	2210]
   };
 
 
@@ -37,23 +41,17 @@ class Bus
     print("Bus 6: " + listOfHouseBuses['6'].toString());
   }
 
-  int getNextBus(String busNumber, int testTime, int location)
+  int getNextBus(String busNumber, int currentTime, int location)
   {
-    //testTime is currently useless but still there to input custom times instead of using the current DateTime
-    var currentTime = new StringBuffer();
-
-    //build a string to be in the format of HHMM, for example 1:20PM will be converted to 1320
-    currentTime.write(DateTime.now().hour.toString());
-    currentTime.write(DateTime.now().minute.toString());
-
-    for(var busTime in location == 0 ? listOfHouseBuses[busNumber] : listOfUniBuses[busNumber]) //loop through every time in the selected bus' schedule, from earliest to latest
+    var busList = location == 0 ? listOfHouseBuses[busNumber] : listOfUniBuses[busNumber];
+    for(var busTime in busList) //loop through every time in the selected bus' schedule, from earliest to latest
     {
       //find the time that's greater than the current time (so which bus comes next)
-      if(int.parse(currentTime.toString()) < busTime)
-      //if(testTime < busTime)
+      if(currentTime < busTime)
         return busTime;
     }
-    return 0;
-
+    return busList[0] + 2400;
+    //if no next bus (aka it's 11:30 and the last bus ran at 11:20), return the earliest bus next morning
+    //I add 24 hours so it will still sort properly, but the formatted time still converts it to a normal time
   }
 }
