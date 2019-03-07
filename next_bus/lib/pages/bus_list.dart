@@ -8,11 +8,11 @@ import '../utils/bus_time.dart';
 
 class BusList extends StatefulWidget
 {
-  int _location;
+  final int _location;
 
   BusList(this._location);
 
-  Bus six = new Bus();
+  final Bus six = new Bus();
 
   int get location => _location; //getter for location field
 
@@ -71,9 +71,9 @@ List<Widget> getListOfHouseBuses()
 
   //load the widget list to be display with the previously sorted list of bus times
   List<Widget> listOfHouseBuses = [
-    new BusDisplay(listOfBusTimes[0]),
-    new BusDisplay(listOfBusTimes[1]),
-    new BusDisplay(listOfBusTimes[2])
+    new BusDisplay(listOfBusTimes[0], 0),
+    new BusDisplay(listOfBusTimes[1], 0),
+    new BusDisplay(listOfBusTimes[2], 0)
   ];
   return listOfHouseBuses;
 }
@@ -98,10 +98,10 @@ List<Widget> getListOfUniBuses()
   listOfBusTimes.sort((a, b) => a.busTime.compareTo(b.busTime));
 
   List<Widget> listOfUniBuses = [
-    new BusDisplay(listOfBusTimes[0]),
-    new BusDisplay(listOfBusTimes[1]),
-    new BusDisplay(listOfBusTimes[2]),
-    new BusDisplay(listOfBusTimes[3])
+    new BusDisplay(listOfBusTimes[0], 1),
+    new BusDisplay(listOfBusTimes[1], 1),
+    new BusDisplay(listOfBusTimes[2], 1),
+    new BusDisplay(listOfBusTimes[3], 1)
   ];
 
   return listOfUniBuses;

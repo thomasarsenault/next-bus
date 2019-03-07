@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'dart:math';
 
 import '../UI/main_scaffold.dart';
 import '../utils/bus_time.dart';
 import '../pages/bus_times.dart';
+import '../utils/bus_data.dart';
 
-class BusDisplay extends StatefulWidget
+
+//TODO: add weekend busses
+//TODO: fix indexing error when printing all bus times
+
+
+class BusListDisplay extends StatefulWidget
 {
   // final int _busNumber;
   // final int _busTime;
 
-  BusTime _busToDisplay;
-  int _location;
+  int _busTime;
   //BusDisplay(this._busNumber, this._busTime);
-  BusDisplay(this._busToDisplay, this._location);
+  BusListDisplay(this._busTime);
 
   @override
-  _BusDisplayState createState() => _BusDisplayState();
+  _BusListDisplayState createState() => _BusListDisplayState();
 }
 
-class _BusDisplayState extends State<BusDisplay> with SingleTickerProviderStateMixin
+class _BusListDisplayState extends State<BusListDisplay> with SingleTickerProviderStateMixin
 {
   Animation<double> _fontSizeAnimation;
   AnimationController _fontSizeAnimationController;
@@ -45,7 +49,7 @@ class _BusDisplayState extends State<BusDisplay> with SingleTickerProviderStateM
   }
 
   @override
-  void didUpdateWidget(BusDisplay oldWidget)
+  void didUpdateWidget(BusListDisplay oldWidget)
   {
     //makes sure the animation works every time a new bus display is called
     //before this, selecting House and then University would not reload the animation
@@ -65,22 +69,15 @@ class _BusDisplayState extends State<BusDisplay> with SingleTickerProviderStateM
       //   )
       // ),
       child: new Padding(
-        padding: new EdgeInsets.only(top: _fontSizeAnimation.value * 20, left: _fontSizeAnimation.value * 20, right: _fontSizeAnimation.value * 20),
+        padding: new EdgeInsets.only(top: _fontSizeAnimation.value * 10, left: _fontSizeAnimation.value * 20, right: _fontSizeAnimation.value * 20),
         child: new RaisedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ListOfBusTimes(widget._busToDisplay.busNumber.toString(), widget._location))
-            );
-          },
+          onPressed: () {},
           child: new Padding(
-            padding: new EdgeInsets.all(_fontSizeAnimation.value * 10),
+            padding: new EdgeInsets.all(_fontSizeAnimation.value * 5),
             child: new Row(
               children: <Widget>[
-              new Icon(FontAwesomeIcons.bus, color: Colors.grey[600]),
-              new Text("  " + widget._busToDisplay.busNumber.toString(), style: new TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold, fontSize: 30.0)),
               new Expanded(
-                child: new Text(getFormattedTime(widget._busToDisplay.busTime), textAlign: TextAlign.right, style: new TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold, fontSize: 30.0))
+                child: new Text(getFormattedTime(widget._busTime), textAlign: TextAlign.center, style: new TextStyle(color: Colors.grey[600], fontWeight: FontWeight.bold, fontSize: 30.0))
               )
             ],)
           )
@@ -124,29 +121,4 @@ String getFormattedTime(int time)
   }
 
   return formattedTime.toString();
-}
-
-Color randomColor()
-{
-  var randNumber = new Random();
-  int next(int min, int max) => min + randNumber.nextInt(max - min);
-
-  int rand = next(0, 3);
-  switch(rand)
-  {
-    case 0: {
-      return Colors.redAccent;
-    }
-    case 1: {
-      return Colors.greenAccent;
-    }
-    case 2: {
-      return Colors.orangeAccent;
-    }
-    case 3: {
-      return Colors.purpleAccent;
-    }
-  }
-
-  return Colors.blueAccent;
 }
